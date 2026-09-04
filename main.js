@@ -42,6 +42,41 @@
 
 
   /* =============================================================
+     TEMA CLARO/OSCURO
+     El <html> ya trae data-theme="dark" aplicado por el script
+     inline del <head> (evita el parpadeo). Acá sólo se conecta el
+     botón: alterna el atributo, lo guarda en localStorage y avisa
+     al <meta name="theme-color"> para que la barra del navegador
+     en mobile combine con el fondo.
+     ============================================================= */
+  function initTheme() {
+    var btn = $("#themeToggle");
+    if (!btn) return;
+
+    var root = document.documentElement;
+    var metaTheme = $('meta[name="theme-color"]');
+
+    function isDark() { return root.getAttribute("data-theme") === "dark"; }
+
+    function reflect() {
+      var dark = isDark();
+      btn.setAttribute("aria-pressed", dark ? "true" : "false");
+      btn.setAttribute("aria-label", dark ? "Cambiar a modo claro" : "Cambiar a modo oscuro");
+      if (metaTheme) metaTheme.setAttribute("content", dark ? "#15121C" : "#FAF8F4");
+    }
+    reflect();
+
+    btn.addEventListener("click", function () {
+      var next = isDark() ? "light" : "dark";
+      if (next === "dark") root.setAttribute("data-theme", "dark");
+      else root.removeAttribute("data-theme");
+      reflect();
+      try { localStorage.setItem("luz-theme", next); } catch (e) {}
+    });
+  }
+
+
+  /* =============================================================
      NAVEGACIÓN
      - Fondo sólido al pasar los 40px de scroll.
      - Menú hamburguesa en mobile: se cierra al elegir un enlace,
@@ -318,8 +353,9 @@
       opacity: 1,
       y: 0,
       filter: "blur(0px)",
-      duration: reduced ? 0.4 : 0.9,
-      ease: "power3.out",
+      duration: reduced ? 0.4 : 2,
+      delay: reduced ? 0 : 0.8,
+      ease: "power2.out",
       stagger: reduced ? 0 : 0.045,
       scrollTrigger: {
         trigger: el,
@@ -547,6 +583,7 @@
      ============================================================= */
   function boot() {
     safe(initYear, "initYear");
+    safe(initTheme, "initTheme");
     safe(initNav, "initNav");
     safe(initAnchors, "initAnchors");
     safe(initLuz, "initLuz");

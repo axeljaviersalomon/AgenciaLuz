@@ -12,6 +12,19 @@
 <meta name="theme-color" content="#FAF8F4" />
 <link rel="canonical" href="https://TU-DOMINIO.com/" />
 
+<!-- Tema oscuro: se aplica ANTES de pintar para evitar el parpadeo
+     de claro→oscuro en la primera carga (bloqueante a propósito, es
+     mínimo). Prioridad: preferencia guardada > preferencia del SO. -->
+<script>
+(function () {
+  try {
+    var saved = localStorage.getItem("luz-theme");
+    var theme = saved || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    if (theme === "dark") document.documentElement.setAttribute("data-theme", "dark");
+  } catch (e) {}
+})();
+</script>
+
 <!-- Open Graph / redes -->
 <meta property="og:type" content="website" />
 <meta property="og:locale" content="es_AR" />
@@ -33,7 +46,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" />
 
 <!-- Hoja de estilos propia. ?v= = cache-busting: subir este número en cada deploy -->
-<link rel="stylesheet" href="styles.css?v=20260904-10" />
+<link rel="stylesheet" href="styles.css?v=20260904-13" />
 
 <!-- ============================================================
      Datos estructurados (schema.org) — Organization + ProfessionalService
@@ -90,19 +103,31 @@
       <span class="brand__name">Agencia&nbsp;Luz</span>
     </a>
 
-    <button class="nav__toggle" id="navToggle" type="button"
-            aria-expanded="false" aria-controls="navMenu" aria-label="Abrir menú">
-      <span class="nav__bar" aria-hidden="true"></span>
-      <span class="nav__bar" aria-hidden="true"></span>
-    </button>
+    <div class="nav__right">
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Cambiar a modo oscuro" aria-pressed="false">
+        <svg class="theme-toggle__icon theme-toggle__icon--sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4.2" />
+          <path d="M12 2.5v2.4M12 19.1v2.4M4.4 4.4l1.7 1.7M17.9 17.9l1.7 1.7M2.5 12h2.4M19.1 12h2.4M4.4 19.6l1.7-1.7M17.9 6.1l1.7-1.7" />
+        </svg>
+        <svg class="theme-toggle__icon theme-toggle__icon--moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M20 14.2A8.2 8.2 0 1 1 9.8 4a6.5 6.5 0 0 0 10.2 10.2z" />
+        </svg>
+      </button>
 
-    <nav class="nav__menu" id="navMenu" aria-label="Navegación principal">
-      <a href="#servicios">Servicios</a>
-      <a href="#desarrollo">Desarrollo</a>
-      <a href="#proceso">Proceso</a>
-      <a href="#faq">Preguntas</a>
-      <a class="btn btn--sm btn--primary" href="#contacto">Consulta gratuita</a>
-    </nav>
+      <button class="nav__toggle" id="navToggle" type="button"
+              aria-expanded="false" aria-controls="navMenu" aria-label="Abrir menú">
+        <span class="nav__bar" aria-hidden="true"></span>
+        <span class="nav__bar" aria-hidden="true"></span>
+      </button>
+
+      <nav class="nav__menu" id="navMenu" aria-label="Navegación principal">
+        <a href="#servicios">Servicios</a>
+        <a href="#desarrollo">Desarrollo</a>
+        <a href="#proceso">Proceso</a>
+        <a href="#faq">Preguntas</a>
+        <a class="btn btn--sm btn--primary" href="#contacto">Consulta gratuita</a>
+      </nav>
+    </div>
   </div>
 </header>
 
@@ -163,12 +188,12 @@
            target="_blank" rel="noopener noreferrer">Escribinos por WhatsApp</a>
       </div>
 
-      <ul class="hero__pillars" aria-label="Áreas de trabajo">
-        <li>Estrategia</li>
-        <li>Contenido</li>
-        <li>Performance</li>
-        <li>Tecnología</li>
-      </ul>
+      <div class="hero__pillars" aria-label="Áreas de trabajo">
+        <div class="hero__pillars-track">
+          <span>Estrategia</span><span>Contenido</span><span>Performance</span><span>Tecnología</span><span>Desarrollo web</span><span>Identidad</span>
+          <span>Estrategia</span><span>Contenido</span><span>Performance</span><span>Tecnología</span><span>Desarrollo web</span><span>Identidad</span>
+        </div>
+      </div>
     </div>
 
     <div class="hero__scroll" aria-hidden="true">
@@ -753,7 +778,7 @@
 <script defer src="lib/gsap.min.js"></script>
 <script defer src="lib/ScrollTrigger.min.js"></script>
 <script defer src="lib/manifest.js?v=20260903-3"></script>
-<script defer src="main.js?v=20260904-6"></script>
+<script defer src="main.js?v=20260904-8"></script>
 
 </body>
 </html>

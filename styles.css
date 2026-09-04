@@ -81,7 +81,7 @@
   /* Escala tipográfica fluida: clamp(mínimo mobile, ideal, máximo desktop) */
   --fs-display: clamp(2.5rem, 7.4vw, 5.6rem);   /* h1 */
   --fs-h2:      clamp(1.9rem, 4.6vw, 3.4rem);
-  --fs-h3:      clamp(1.12rem, 1.6vw, 1.32rem);
+  --fs-h3:      clamp(1.28rem, 2vw, 1.55rem);
   --fs-lede:    clamp(1.02rem, 1.9vw, 1.28rem);
   --fs-body:    clamp(0.97rem, 1.3vw, 1.05rem);
   --fs-mono:    0.72rem;
@@ -105,7 +105,42 @@
   --z-nav:  60;
   --z-wa:   70;
 
+  /* Fondo del nav sólido al scrollear / menú mobile: en un color propio
+     para poder invertirlo en tema oscuro sin tocar el resto del sitio */
+  --nav-bg:    rgba(250, 248, 244, 0.86);
+  --nav-bg-solid: rgba(250, 248, 244, 0.98);
+
   color-scheme: light;
+}
+
+/* =============================================================
+   TEMA OSCURO
+   Redefine sólo los tokens de color de la sección clara: todo lo
+   que ya vive en fondo oscuro (.dev, .footer, .wa) usa sus propias
+   variables --dark-* y no necesita cambios. Activado por JS
+   (initTheme en main.js) agregando data-theme="dark" al <html> y
+   guardado en localStorage; sin JS el sitio se queda en claro.
+   ============================================================= */
+:root[data-theme="dark"] {
+  --paper:       #15121C;
+  --paper-2:     #1E1A28;
+  --surface:     #211D2C;
+
+  --ink:         #F3EFEA;
+  --ink-soft:    rgba(243, 239, 234, 0.72);
+  --ink-mute:    rgba(243, 239, 234, 0.52);
+  --line:        rgba(243, 239, 234, 0.14);
+  --line-strong: rgba(243, 239, 234, 0.26);
+
+  --accent-soft: rgba(74, 104, 153, 0.20);
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.18), 0 10px 24px -16px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 2px 6px rgba(0, 0, 0, 0.22), 0 20px 40px -22px rgba(0, 0, 0, 0.6);
+
+  --nav-bg:       rgba(21, 18, 28, 0.86);
+  --nav-bg-solid: rgba(21, 18, 28, 0.98);
+
+  color-scheme: dark;
 }
 
 
@@ -153,6 +188,11 @@ h1 em, h2 em, h3 em {
   font-style: italic;
   color: var(--accent-ink);   /* un paso más oscuro que el botón: legible en texto */
 }
+
+/* En tema oscuro el titular del hero cambia a ámbar: el azul apagado
+   pierde fuerza sobre fondo casi negro, el naranja de la marca (--sun)
+   se lee mejor y conecta con la luz que sigue al cursor. */
+:root[data-theme="dark"] .hero__title em { color: var(--sun); }
 
 ::selection { background: var(--sun); color: #17130A; }
 
@@ -317,7 +357,7 @@ h1 em, h2 em, h3 em {
 .btn--ghost {
   border: 1px solid var(--line-strong);
   color: var(--ink);
-  background: rgba(255, 255, 255, 0.6);
+  background: color-mix(in srgb, var(--surface) 60%, transparent);
 }
 .btn--sm { min-height: 42px; padding: 0.55rem 1.1rem; font-size: 0.86rem; }
 .btn--block { width: 100%; }
@@ -353,7 +393,7 @@ h1 em, h2 em, h3 em {
   border-bottom: 1px solid transparent;
 }
 .nav.is-scrolled {
-  background: rgba(250, 248, 244, 0.86);
+  background: var(--nav-bg);
   border-bottom-color: var(--line);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
@@ -367,6 +407,12 @@ h1 em, h2 em, h3 em {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
+}
+
+.nav__right {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
 }
 
 .brand {
@@ -384,6 +430,28 @@ h1 em, h2 em, h3 em {
   box-shadow: 0 0 14px 2px rgba(232, 163, 23, 0.55);
   flex: none;
 }
+
+/* Interruptor de tema: un botón redondo que alterna sol/luna con un
+   crossfade simple. Vive siempre visible en el nav, mobile y desktop. */
+.theme-toggle {
+  position: relative;
+  width: 42px; height: 42px;
+  display: grid;
+  place-content: center;
+  border-radius: 50%;
+  color: var(--ink-soft);
+  flex: none;
+  transition: background-color 0.3s var(--ease-out), color 0.3s var(--ease-out);
+}
+.theme-toggle:hover { background: var(--accent-soft); color: var(--accent); }
+.theme-toggle__icon {
+  grid-area: 1 / 1;
+  width: 20px; height: 20px;
+  transition: opacity 0.3s var(--ease-out), transform 0.4s var(--ease-out);
+}
+.theme-toggle__icon--moon { opacity: 0; transform: scale(0.6) rotate(-40deg); }
+:root[data-theme="dark"] .theme-toggle__icon--sun  { opacity: 0; transform: scale(0.6) rotate(40deg); }
+:root[data-theme="dark"] .theme-toggle__icon--moon { opacity: 1; transform: scale(1) rotate(0deg); }
 
 /* Botón hamburguesa: dos barras que se cruzan al abrir */
 .nav__toggle {
@@ -409,7 +477,7 @@ h1 em, h2 em, h3 em {
   display: grid;
   gap: 0.35rem;
   padding: 0.75rem var(--gutter) 1.25rem;
-  background: rgba(250, 248, 244, 0.98);
+  background: var(--nav-bg-solid);
   border-bottom: 1px solid var(--line);
   box-shadow: var(--shadow-sm);
   backdrop-filter: blur(14px);
@@ -482,6 +550,14 @@ h1 em, h2 em, h3 em {
   opacity: 0.16;
   pointer-events: none;
 }
+/* En tema oscuro el azul apagado casi desaparece contra el fondo casi
+   negro (sobre todo en mobile, donde el círculo entra más recortado y
+   de canto). Se invierte a un trazo cálido y claro, más opaco, para
+   que la textura siga siendo visible sin volverse protagonista. */
+:root[data-theme="dark"] .hero__rings {
+  color: var(--rose);
+  opacity: 0.3;
+}
 .hero__rings svg {
   /* top/right en vw (no %) a propósito: en mobile el hero es muy alto
      (min-height:100svh) y un % ahí se dispara; en vw el recorte queda
@@ -493,6 +569,16 @@ h1 em, h2 em, h3 em {
   right: -8vw;
   width: min(76vw, 1080px);
   height: auto;
+}
+/* En mobile el recorte por defecto queda demasiado chico y casi no se
+   nota; se agranda para que se parezca más a la proporción del hero
+   de escritorio (el círculo ocupando buena parte de la esquina). */
+@media (max-width: 719px) {
+  .hero__rings svg {
+    top: -46vw;
+    right: -34vw;
+    width: min(148vw, 1080px);
+  }
 }
 /* La rotación va acá, en el <g> interno, nunca en el <svg>: si giraba
    el <svg> (un cuadrado), su caja de colisión se inflaba hasta ~41%
@@ -525,21 +611,30 @@ h1 em, h2 em, h3 em {
   margin-bottom: 3rem;
 }
 
-/* Pilares: cuatro palabras en mono separadas por puntos */
+/* Pilares: cinta en movimiento continuo, mismo recurso que .marquee
+   en la sección de Desarrollo (ver 10. DESARROLLO). El track duplica
+   la lista y se desplaza un 50% exacto: el loop no se nota. */
 .hero__pillars {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem 1.5rem;
-  list-style: none;
+  position: relative;
+  overflow: hidden;
   padding: 1.25rem 0 0;
   border-top: 1px solid var(--line);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.hero__pillars-track {
+  display: flex;
+  width: max-content;
+  gap: 2rem;
+  animation: marqueeSlide 32s linear infinite;
   font-family: var(--mono);
   font-size: var(--fs-mono);
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--ink-mute);
 }
-.hero__pillars li { position: relative; }
+.hero__pillars-track span { white-space: nowrap; position: relative; }
+.hero__pillars-track span::after { content: " ·"; color: var(--clay); margin-left: 2rem; }
 
 /* Indicador de scroll: sólo desde tablet, en mobile ocupa lugar sin aportar */
 .hero__scroll { display: none; }
@@ -958,7 +1053,7 @@ h1 em, h2 em, h3 em {
   padding: clamp(1.3rem, 3vw, 1.7rem);
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: rgba(255, 255, 255, 0.65);
+  background: color-mix(in srgb, var(--surface) 65%, transparent);
 }
 .chip h3 { font-size: var(--fs-h3); margin-bottom: 0.4rem; }
 .chip p { color: var(--ink-soft); font-size: 0.94rem; }
@@ -991,7 +1086,7 @@ h1 em, h2 em, h3 em {
   cursor: pointer;
   list-style: none;
   font-family: var(--serif);
-  font-size: 1.11rem;
+  font-size: clamp(1.24rem, 2vw, 1.4rem);
   line-height: 1.25;
 }
 .faq__item summary::-webkit-details-marker { display: none; }
@@ -1201,6 +1296,8 @@ html.anim .reveal.is-in { opacity: 1; transform: none; }
 @media (min-width: 960px) {
   :root { --gutter: 2.5rem; }
 
+  .nav__right { gap: 1.25rem; }
+
   /* El menú deja de ser panel y vuelve a ser barra horizontal */
   .nav__toggle { display: none; }
   .nav__menu {
@@ -1251,16 +1348,6 @@ html.anim .reveal.is-in { opacity: 1; transform: none; }
   }
   .hero__scroll .mono { writing-mode: vertical-rl; letter-spacing: 0.3em; }
 
-  /* Separadores entre pilares del hero */
-  .hero__pillars li + li::before {
-    content: "";
-    position: absolute;
-    left: -0.9rem; top: 50%;
-    width: 3px; height: 3px;
-    border-radius: 50%;
-    background: var(--clay);
-    transform: translateY(-50%);
-  }
 }
 
 /* --- 1280px: desktop ---------------------------------------- */
@@ -1296,7 +1383,7 @@ html.anim .reveal.is-in { opacity: 1; transform: none; }
   /* Efectos con loop infinito: se detienen (son los realmente intrusivos) */
   .blob, .banda__glow, .banda__rings-spin, .dotwave,
   .devcard--brand__ring, .hero__rings-spin { animation: none; }
-  .marquee__track { animation: none; }
+  .marquee__track, .hero__pillars-track { animation: none; }
   .dev__figure img { transform: scale(1.02); }
 
   /* Los reveals se reducen a un fade sin desplazamiento */
