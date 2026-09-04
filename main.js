@@ -218,6 +218,58 @@
 
 
   /* =============================================================
+     LUZ DE LA SECCIÓN DESARROLLO
+     El fondo sólido oscuro de .dev tapa la capa .luz global (por eso
+     ahí no se veía nada siguiendo al cursor). Este es el mismo patrón
+     de lerp + requestAnimationFrame que initLuz, pero:
+       - Coordenadas relativas al propio bloque (getBoundingClientRect),
+         no al viewport: así el resplandor queda bajo el cursor real
+         aunque la sección sea más alta que la pantalla.
+       - Escribe --dx/--dy en vez de --mx/--my, sobre .dev__luz.
+     ============================================================= */
+  function initDevLuz() {
+    if (reduced) return;
+
+    var section = $(".dev");
+    var glow = $(".dev__luz", section);
+    if (!section || !glow) return;
+
+    var targetX = 50, targetY = 32;
+    var currentX = 50, currentY = 32;
+    var running = false;
+
+    function render() {
+      currentX += (targetX - currentX) * 0.12;
+      currentY += (targetY - currentY) * 0.12;
+
+      glow.style.setProperty("--dx", currentX.toFixed(2) + "%");
+      glow.style.setProperty("--dy", currentY.toFixed(2) + "%");
+
+      if (Math.abs(targetX - currentX) > 0.05 || Math.abs(targetY - currentY) > 0.05) {
+        requestAnimationFrame(render);
+      } else {
+        running = false;
+      }
+    }
+
+    function kick() {
+      if (running) return;
+      running = true;
+      requestAnimationFrame(render);
+    }
+
+    if (finePoint) {
+      section.addEventListener("mousemove", function (e) {
+        var rect = section.getBoundingClientRect();
+        targetX = ((e.clientX - rect.left) / rect.width) * 100;
+        targetY = ((e.clientY - rect.top) / rect.height) * 100;
+        kick();
+      }, { passive: true });
+    }
+  }
+
+
+  /* =============================================================
      REVEALS CON GSAP + SCROLLTRIGGER
      Criterio de animación (según el brief):
        - Sólo fade + desplazamiento corto (18px, 12px en mobile).
@@ -354,7 +406,6 @@
       y: 0,
       filter: "blur(0px)",
       duration: reduced ? 0.4 : 2,
-      delay: reduced ? 0 : 0.8,
       ease: "power2.out",
       stagger: reduced ? 0 : 0.045,
       scrollTrigger: {
@@ -396,6 +447,58 @@
           }
         }
       );
+    });
+  }
+
+
+  /* =============================================================
+     LÍNEA DE TIEMPO DEL PROCESO
+     Simula que el recorrido "se completa" a medida que se scrollea:
+       - Una línea de color (.timeline__progress) se escala de 0 a 1
+         siguiendo el scroll (scrub), dibujándose de arriba hacia abajo.
+       - Cada punto (::before de .step) aparece con un pequeño pop
+         cuando su paso entra en pantalla, vía la custom property
+         --dot-scale (GSAP puede animar props CSS directamente).
+     El texto de cada paso ya se revela con el sistema genérico de
+     .reveal; esto sólo agrega el trazo y los puntos.
+     ============================================================= */
+  function initTimelineDraw() {
+    var wrap = $(".proceso__inner");
+    var progress = $(".timeline__progress", wrap);
+    var steps = $$(".step", wrap);
+    if (!wrap || !progress || !steps.length) return;
+
+    if (reduced) {
+      gsap.set(progress, { scaleY: 1 });
+      gsap.set(steps, { "--dot-scale": 1 });
+      return;
+    }
+
+    gsap.set(progress, { scaleY: 0 });
+    gsap.set(steps, { "--dot-scale": 0 });
+
+    gsap.to(progress, {
+      scaleY: 1,
+      ease: "none",
+      scrollTrigger: {
+        trigger: wrap,
+        start: "top 75%",
+        end: "bottom 75%",
+        scrub: 0.5
+      }
+    });
+
+    steps.forEach(function (step) {
+      gsap.to(step, {
+        "--dot-scale": 1,
+        duration: 0.4,
+        ease: "back.out(2)",
+        scrollTrigger: {
+          trigger: step,
+          start: "top 78%",
+          toggleActions: "play none none reverse"
+        }
+      });
     });
   }
 
@@ -496,6 +599,73 @@
 
 
   /* =============================================================
+     ACORDEÓN DE PREGUNTAS FRECUENTES — apertura/cierre animados
+     <details>/<summary> es accesible de fábrica pero el navegador
+     alterna el contenido de golpe (display:none↔block), sin lugar
+     para una transición. Acá se intercepta el click, se anima la
+     altura real de .faq__body con la Web Animations API nativa (sin
+     GSAP: no depende de que esa librería haya cargado) y recién al
+     terminar se sincroniza el atributo `open` real.
+
+     Con movimiento reducido no se intercepta nada: el <details> se
+     abre/cierra instantáneo, como corresponde.
+     ============================================================= */
+  function initFaqAnim() {
+    if (reduced) return;
+    if (!("animate" in Element.prototype)) return;   // sin WAAPI, toggle nativo
+
+    var EASE = "cubic-bezier(0.16, 1, 0.3, 1)";
+
+    $$(".faq__item").forEach(function (item) {
+      var summary = $("summary", item);
+      var body = $(".faq__body", item);
+      if (!summary || !body) return;
+
+      var anim = null;
+
+      summary.addEventListener("click", function (e) {
+        e.preventDefault();
+        if (item.classList.contains("is-animating")) return;
+
+        if (item.open) closeItem(); else openItem();
+      });
+
+      function openItem() {
+        item.classList.add("is-animating");
+        item.open = true;
+        var target = body.scrollHeight;
+        body.style.overflow = "hidden";
+        anim = body.animate(
+          { height: ["0px", target + "px"] },
+          { duration: 320, easing: EASE }
+        );
+        anim.onfinish = function () { finish(); };
+      }
+
+      function closeItem() {
+        item.classList.add("is-animating");
+        var start = body.scrollHeight;
+        body.style.overflow = "hidden";
+        anim = body.animate(
+          { height: [start + "px", "0px"] },
+          { duration: 260, easing: EASE }
+        );
+        anim.onfinish = function () {
+          item.open = false;
+          finish();
+        };
+      }
+
+      function finish() {
+        body.style.height = "";
+        body.style.overflow = "";
+        item.classList.remove("is-animating");
+      }
+    });
+  }
+
+
+  /* =============================================================
      MALLA DE PUNTOS — fondo animado de la sección "Para quién".
      Grilla de puntos cuyo tamaño/brillo ondula con una onda seno
      (dos ejes, para que no se vea un simple barrido lineal), en los
@@ -587,7 +757,9 @@
     safe(initNav, "initNav");
     safe(initAnchors, "initAnchors");
     safe(initLuz, "initLuz");
+    safe(initDevLuz, "initDevLuz");
     safe(initForm, "initForm");
+    safe(initFaqAnim, "initFaqAnim");
     safe(initDotWave, "initDotWave");
 
     // GSAP se usa sólo si cargó. Si el archivo faltara, el sitio
@@ -598,6 +770,7 @@
       safe(initBandaQuote, "initBandaQuote");
       safe(initReveals, "initReveals");
       safe(initParallax, "initParallax");
+      safe(initTimelineDraw, "initTimelineDraw");
     }
 
     document.documentElement.classList.add("is-ready");

@@ -46,7 +46,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" />
 
 <!-- Hoja de estilos propia. ?v= = cache-busting: subir este número en cada deploy -->
-<link rel="stylesheet" href="styles.css?v=20260904-13" />
+<link rel="stylesheet" href="styles.css?v=20260904-15" />
 
 <!-- ============================================================
      Datos estructurados (schema.org) — Organization + ProfessionalService
@@ -382,6 +382,11 @@
        servicio y sub-CTA independiente.
        ========================================================== -->
   <section class="dev" id="desarrollo" aria-labelledby="dev-title">
+    <!-- La luz que sigue al cursor también existe acá: el fondo sólido
+         oscuro tapa la capa .luz global, así que esta sección tiene su
+         propia versión (tonos cálidos, más intensa para notarse sobre
+         casi negro). initDevLuz en main.js la mueve con el mouse. -->
+    <div class="dev__luz" aria-hidden="true"></div>
     <div class="wrap">
 
       <!-- Sub-hero del bloque: texto a la izquierda, imagen a la derecha (desktop) -->
@@ -535,6 +540,7 @@
       </header>
 
       <div class="proceso__inner">
+      <div class="timeline__progress" aria-hidden="true"></div>
       <ol class="timeline">
         <li class="step reveal">
           <span class="step__num mono">01</span>
@@ -778,7 +784,7 @@
 <script defer src="lib/gsap.min.js"></script>
 <script defer src="lib/ScrollTrigger.min.js"></script>
 <script defer src="lib/manifest.js?v=20260903-3"></script>
-<script defer src="main.js?v=20260904-8"></script>
+<script defer src="main.js?v=20260904-10"></script>
 
 </body>
 </html>
