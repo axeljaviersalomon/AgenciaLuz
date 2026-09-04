@@ -33,7 +33,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" />
 
 <!-- Hoja de estilos propia. ?v= = cache-busting: subir este número en cada deploy -->
-<link rel="stylesheet" href="styles.css?v=20260903-3" />
+<link rel="stylesheet" href="styles.css?v=20260904-10" />
 
 <!-- ============================================================
      Datos estructurados (schema.org) — Organization + ProfessionalService
@@ -76,6 +76,7 @@
      Decorativa: aria-hidden y pointer-events:none.
      ============================================================ -->
 <div class="luz" aria-hidden="true"></div>
+<div class="dotgrid" aria-hidden="true"></div>
 <div class="grain" aria-hidden="true"></div>
 
 <!-- ============================================================
@@ -112,6 +113,38 @@
        Sin imagen: el LCP es texto, así carga instantáneo.
        ========================================================== -->
   <section class="hero" id="inicio">
+    <!-- Marcas técnicas de esquina: guiño a planos/blueprints, refuerzan
+         la sensación de producto diseñado a medida. Puramente decorativas. -->
+    <div class="hero__marks" aria-hidden="true">
+      <span class="corner corner--tl"></span>
+      <span class="corner corner--tr"></span>
+      <span class="corner corner--bl"></span>
+      <span class="corner corner--br"></span>
+    </div>
+
+    <!-- Círculos concéntricos: el mismo recurso del hero de OrlandoStudio
+         (axeljaviersalomon.github.io/OrlandoStudio), pero mucho más
+         grande y corrido arriba a la derecha a propósito, para que sólo
+         entren porciones del círculo en el viewport, nunca el círculo
+         completo. Gira carísimo de lento (una vuelta cada 2.5 min). -->
+    <div class="hero__rings" aria-hidden="true">
+      <!-- La rotación va en el <g>, no en el <svg>: si giraba el <svg>
+           (un cuadrado), la caja del elemento se inflaba hasta un 41%
+           en las diagonales y el círculo "bajaba" más de lo previsto,
+           llegando a cruzar la línea de los pilares. Rotando sólo el
+           contenido interno, el <svg> queda fijo siempre. -->
+      <svg viewBox="0 0 500 500">
+        <g class="hero__rings-spin">
+          <circle cx="250" cy="250" r="240" fill="none" stroke="currentColor" stroke-width="1" />
+          <circle cx="250" cy="250" r="180" fill="none" stroke="currentColor" stroke-width="1" />
+          <circle cx="250" cy="250" r="120" fill="none" stroke="currentColor" stroke-width="1" />
+          <circle cx="250" cy="10"  r="5"   fill="currentColor" />
+          <circle cx="470" cy="330" r="4"   fill="currentColor" />
+          <circle cx="70"  cy="380" r="3.5" fill="currentColor" />
+        </g>
+      </svg>
+    </div>
+
     <div class="wrap hero__inner">
       <h1 class="hero__title">
         Marketing y tecnología para marcas que quieren
@@ -148,8 +181,9 @@
        MANIFIESTO — problema / solución / resultado
        ========================================================== -->
   <section class="section manifiesto" id="manifiesto" aria-labelledby="manifiesto-title">
-    <!-- Mancha de color difusa: rompe el plano del fondo. Decorativa. -->
-    <span class="blob blob--rose" aria-hidden="true"></span>
+    <!-- Misma malla de puntos animada que "¿Para quién es este servicio?":
+         reemplaza la mancha rosa que había acá antes. -->
+    <canvas class="dotwave" aria-hidden="true"></canvas>
     <div class="wrap">
       <h2 class="section__title reveal" id="manifiesto-title">
         No es hacer posteos.<br />Es construir una <em>marca que venda</em>.
@@ -187,18 +221,32 @@
   </section>
 
   <!-- ==========================================================
-       BANDA DE LUZ — imagen ancha a sangre con parallax suave.
-       Corta el ritmo entre dos secciones de texto y hace de puente
-       cromático hacia el bloque oscuro de Desarrollo.
+       BANDA — declaración de marca sin caja de color propia: vive
+       sobre el mismo papel claro que el resto de la página, para que
+       el ritmo no se corte. El efecto es sólo dos resplandores y dos
+       anillos con movimiento continuo, 100% CSS, sin foto.
        ========================================================== -->
-  <section class="banda" aria-label="Ciudad al atardecer">
-    <div class="banda__media">
-      <!-- data-parallax: main.js la desplaza 40px con el scroll. Dimensiones
-           explícitas para que no haya salto de layout (CLS) al cargar. -->
-      <img src="assets/img/luz-ciudad.jpg" alt="Vista aérea de una ciudad al atardecer"
-           width="1600" height="900" loading="lazy" decoding="async" data-parallax />
+  <section class="banda" aria-label="Visibilidad y estrategia">
+    <div class="banda__fx" aria-hidden="true">
+      <span class="banda__glow banda__glow--sun"></span>
+      <span class="banda__glow banda__glow--rose"></span>
+      <!-- Mismos círculos concéntricos del hero, reutilizados acá
+           centrados detrás de la frase en vez de recortados en una
+           esquina. -->
+      <svg class="banda__rings" viewBox="0 0 500 500">
+        <g class="banda__rings-spin">
+          <circle cx="250" cy="250" r="240" fill="none" stroke="currentColor" stroke-width="1" />
+          <circle cx="250" cy="250" r="180" fill="none" stroke="currentColor" stroke-width="1" />
+          <circle cx="250" cy="250" r="120" fill="none" stroke="currentColor" stroke-width="1" />
+          <circle cx="250" cy="10"  r="5"   fill="currentColor" />
+          <circle cx="470" cy="330" r="4"   fill="currentColor" />
+          <circle cx="70"  cy="380" r="3.5" fill="currentColor" />
+        </g>
+      </svg>
     </div>
-    <p class="banda__quote reveal">
+    <!-- Sin .reveal: la anima initBandaQuote en main.js, palabra por
+         palabra, en vez del fade genérico del resto del sitio. -->
+    <p class="banda__quote">
       Visibilidad sin estrategia es ruido.<br /><em>Nosotros hacemos que se entienda.</em>
     </p>
   </section>
@@ -315,7 +363,7 @@
       <!-- Sub-hero del bloque: texto a la izquierda, imagen a la derecha (desktop) -->
       <div class="dev__top">
         <header class="dev__hero">
-          <p class="kicker kicker--rose reveal">Servicio destacado</p>
+          <p class="kicker kicker--rose reveal">Servicio de Desarrollo web y Herramientas digitales</p>
           <h2 class="dev__title reveal" id="dev-title">
             No solo hacemos una web bonita: construimos la
             <em>infraestructura digital</em> que hace que tu negocio funcione solo.
@@ -327,8 +375,8 @@
         </header>
 
         <figure class="dev__figure reveal">
-          <img src="assets/img/luz-noche.jpg" alt="Luces de una ciudad reflejadas en el agua de noche"
-               width="1400" height="900" loading="lazy" decoding="async" data-parallax />
+          <img src="assets/img/luz-dev.jpg" alt="Manos escribiendo en un notebook con paneles de datos superpuestos en pantalla"
+               width="1400" height="933" loading="lazy" decoding="async" data-parallax />
         </figure>
       </div>
 
@@ -429,6 +477,18 @@
           <p class="devcard__benefit"><span aria-hidden="true">→</span> La tecnología crece con vos.</p>
         </article>
 
+        <!-- 8va celda: no es un servicio más, es una tarjeta de marca.
+             Con 7 servicios sobraban 2 celdas en la grilla de 3 columnas
+             (se veía un hueco vacío); esta ocupa el doble de ancho en
+             desktop (ver dev__grid en styles.css) y cierra la fila justa,
+             de paso metiendo el "punto" de identidad (el dot ámbar) acá. -->
+        <div class="devcard devcard--brand reveal">
+          <span class="devcard--brand__ring" aria-hidden="true"></span>
+          <span class="devcard--brand__dot" aria-hidden="true"></span>
+          <p class="devcard--brand__brand mono">Agencia&nbsp;Luz</p>
+          <p class="devcard--brand__quote">Donde la estrategia y el código trabajan para el mismo objetivo.</p>
+        </div>
+
       </div>
 
       <!-- Sub-CTA propio del bloque -->
@@ -478,14 +538,6 @@
           <p>Miramos los números, cortamos lo que no rinde y duplicamos lo que sí. El plan se ajusta con datos.</p>
         </li>
       </ol>
-
-      <!-- Imagen vertical que acompaña el recorrido. Sticky en desktop:
-           queda fija mientras se leen los cinco pasos. -->
-      <figure class="proceso__figure reveal">
-        <img src="assets/img/luz-escena.jpg" alt="Luces de escenario durante una producción audiovisual"
-             width="1100" height="1400" loading="lazy" decoding="async" />
-        <figcaption>Producción, estrategia y código: un mismo objetivo.</figcaption>
-      </figure>
       </div>
     </div>
   </section>
@@ -494,6 +546,10 @@
        PARA QUIÉN
        ========================================================== -->
   <section class="section publico" id="publico" aria-labelledby="publico-title">
+    <!-- Malla de puntos animada: mismo recurso que las referencias premium
+         (grilla de puntos cuyo brillo ondula), hecho en canvas nativo con
+         los colores de la marca, no una imagen. main.js la dibuja/anima. -->
+    <canvas class="dotwave" aria-hidden="true"></canvas>
     <div class="wrap">
       <header class="section__head reveal">
         <p class="kicker">Perfil</p>
@@ -525,6 +581,9 @@
        FAQ — acordeón con <details>: accesible y funciona sin JS
        ========================================================== -->
   <section class="section faq" id="faq" aria-labelledby="faq-title">
+    <!-- Sin fondo propio: se apoya en la capa .luz de siempre (el
+         resplandor que sigue al cursor, definido una sola vez en el
+         body). Mismo look neutro que el resto de secciones claras. -->
     <div class="wrap wrap--narrow">
       <header class="section__head reveal">
         <p class="kicker">Preguntas frecuentes</p>
@@ -695,7 +754,7 @@
 <script defer src="lib/gsap.min.js"></script>
 <script defer src="lib/ScrollTrigger.min.js"></script>
 <script defer src="lib/manifest.js?v=20260903-3"></script>
-<script defer src="main.js?v=20260903-3"></script>
+<script defer src="main.js?v=20260904-6"></script>
 
 </body>
 </html>

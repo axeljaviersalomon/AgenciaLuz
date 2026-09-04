@@ -271,6 +271,66 @@
 
 
   /* =============================================================
+     FRASE DE LA BANDA — entrada palabra por palabra.
+     Envuelve cada palabra del texto en un <span class="word"> (sin
+     tocar el <br> ni el <em>: sólo reemplaza los nodos de texto) y
+     las anima con blur + opacidad + un pequeño ascenso, en cascada.
+     Es el único lugar del sitio con esta animación "de cierre": le da
+     un remate distinto a la frase-eslogan sin repetir el fade genérico
+     de .reveal en el resto de las secciones.
+     ============================================================= */
+  function initBandaQuote() {
+    var el = $(".banda__quote");
+    if (!el) return;
+
+    function wrapWords(node) {
+      Array.prototype.slice.call(node.childNodes).forEach(function (child) {
+        if (child.nodeType === 3) {
+          var frag = document.createDocumentFragment();
+          child.textContent.split(/(\s+)/).forEach(function (chunk) {
+            if (chunk === "") return;
+            if (/^\s+$/.test(chunk)) {
+              frag.appendChild(document.createTextNode(chunk));
+            } else {
+              var span = document.createElement("span");
+              span.className = "word";
+              span.textContent = chunk;
+              frag.appendChild(span);
+            }
+          });
+          node.replaceChild(frag, child);
+        } else if (child.nodeType === 1) {
+          wrapWords(child);
+        }
+      });
+    }
+    wrapWords(el);
+
+    var words = $$(".word", el);
+    if (!words.length) return;
+
+    gsap.set(words, {
+      opacity: 0,
+      y: reduced ? 0 : 22,
+      filter: reduced ? "none" : "blur(8px)"
+    });
+    gsap.to(words, {
+      opacity: 1,
+      y: 0,
+      filter: "blur(0px)",
+      duration: reduced ? 0.4 : 0.9,
+      ease: "power3.out",
+      stagger: reduced ? 0 : 0.045,
+      scrollTrigger: {
+        trigger: el,
+        start: "top 82%",
+        once: true
+      }
+    });
+  }
+
+
+  /* =============================================================
      PARALLAX SUAVE EN IMÁGENES
      Recorrido total de un 8% de la altura de la imagen (±4%), que en
      una banda de 400px son unos 32px: se percibe como profundidad,
@@ -400,6 +460,89 @@
 
 
   /* =============================================================
+     MALLA DE PUNTOS — fondo animado de la sección "Para quién".
+     Grilla de puntos cuyo tamaño/brillo ondula con una onda seno
+     (dos ejes, para que no se vea un simple barrido lineal), en los
+     colores de la marca. Canvas 2D nativo: nada de librerías.
+     Se pausa fuera de pantalla (IntersectionObserver) para no gastar
+     batería de más, y con movimiento reducido dibuja un único frame
+     estático en vez de animar.
+     ============================================================= */
+  function initDotWave() {
+    var canvases = $$(".dotwave");
+    if (!canvases.length) return;
+
+    var css = getComputedStyle(document.documentElement);
+    var dotColor    = (css.getPropertyValue("--ink-mute") || "#6B6459").trim();
+    var accentColor = (css.getPropertyValue("--clay") || "#C4562F").trim();
+    var GAP = 26;                 // separación entre puntos, en px CSS
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+    // Cada canvas es independiente (resize/tiempo/observer propios) —
+    // una sección puede estar en pantalla mientras la otra no.
+    canvases.forEach(function (canvas) {
+      if (!canvas.getContext) return;
+      var ctx = canvas.getContext("2d");
+      if (!ctx) return;
+
+      var w = 0, h = 0, t = Math.random() * 100, running = false;
+
+      function resize() {
+        var rect = canvas.parentElement.getBoundingClientRect();
+        w = rect.width;
+        h = rect.height;
+        canvas.width  = Math.max(1, Math.round(w * dpr));
+        canvas.height = Math.max(1, Math.round(h * dpr));
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, w, h);
+        var cols = Math.ceil(w / GAP) + 1;
+        var rows = Math.ceil(h / GAP) + 1;
+        for (var i = 0; i < cols; i++) {
+          for (var j = 0; j < rows; j++) {
+            var x = i * GAP;
+            var y = j * GAP;
+            var wave = Math.sin(x * 0.02 + t) * Math.cos(y * 0.028 + t * 0.7);
+            var lift = Math.max(0, wave);
+            ctx.beginPath();
+            ctx.fillStyle = wave > 0.72 ? accentColor : dotColor;
+            ctx.globalAlpha = 0.05 + lift * 0.24;
+            ctx.arc(x, y, 1 + lift * 1.7, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        }
+        ctx.globalAlpha = 1;
+      }
+
+      function frame() {
+        if (!running) return;
+        t += 0.006;
+        draw();
+        requestAnimationFrame(frame);
+      }
+      function start() { if (!running) { running = true; requestAnimationFrame(frame); } }
+      function stop()  { running = false; }
+
+      resize();
+      draw();
+      if (reduced) return;   // se queda con el frame estático de arriba
+
+      window.addEventListener("resize", function () { resize(); draw(); }, { passive: true });
+
+      if ("IntersectionObserver" in window) {
+        new IntersectionObserver(function (entries) {
+          if (entries[0].isIntersecting) start(); else stop();
+        }, { threshold: 0.05 }).observe(canvas);
+      } else {
+        start();
+      }
+    });
+  }
+
+
+  /* =============================================================
      BOOT
      ============================================================= */
   function boot() {
@@ -408,12 +551,14 @@
     safe(initAnchors, "initAnchors");
     safe(initLuz, "initLuz");
     safe(initForm, "initForm");
+    safe(initDotWave, "initDotWave");
 
     // GSAP se usa sólo si cargó. Si el archivo faltara, el sitio
     // sigue siendo perfectamente legible y navegable.
     if (window.gsap && window.ScrollTrigger) {
       try { gsap.registerPlugin(ScrollTrigger); } catch (err) {}
       safe(initHero, "initHero");
+      safe(initBandaQuote, "initBandaQuote");
       safe(initReveals, "initReveals");
       safe(initParallax, "initParallax");
     }

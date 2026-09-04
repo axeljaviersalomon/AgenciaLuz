@@ -55,17 +55,17 @@ Funciona en Apache y LiteSpeed; en Netlify o Cloudflare Pages se ignora (usan
 
 ## Imágenes
 
-Las tres fotos de `assets/img/` son **placeholders de stock** (archivo de Unsplash vía
-Lorem Picsum, detalle en `assets/credits.json`). Comparten un mismo hilo visual —luces:
-ciudad al atardecer, luces nocturnas, luces de escenario— que es de donde sale el rosa
-de la paleta. Reemplazarlas por trabajo real de la agencia manteniendo los nombres de
-archivo y las proporciones:
+La única foto de `assets/img/` es un **placeholder de stock** de Unsplash (detalle y
+atribución en `assets/credits.json`, licencia Unsplash — uso libre, sin atribución
+obligatoria). Reemplazarla por trabajo real de la agencia manteniendo el nombre de
+archivo y la proporción:
 
 | Archivo | Dónde | Proporción |
 |---|---|---|
-| `luz-ciudad.jpg` | banda entre manifiesto y servicios | 16:9 |
-| `luz-noche.jpg` | bloque oscuro de Desarrollo | 16:10 |
-| `luz-escena.jpg` | columna del proceso | 4:5 vertical |
+| `luz-dev.jpg` | bloque oscuro de Desarrollo | ~16:10.7 |
+
+(La banda entre manifiesto y servicios, y la columna de Proceso, ya no usan foto:
+son fondos/diseño hechos en CSS.)
 
 Si cambia la proporción, ajustar el `width`/`height` del `<img>` en `index.html`
 (están puestos para evitar saltos de layout al cargar).

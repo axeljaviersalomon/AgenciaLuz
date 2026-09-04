@@ -1,10 +1,7 @@
 {
   "nota": "Imágenes de stock usadas como placeholder. Reemplazar por fotos reales de la agencia cuando estén disponibles.",
-  "fuente": "Lorem Picsum (archivo de Unsplash) — https://picsum.photos",
-  "licencia": "Unsplash License",
+  "licencia": "Unsplash License (uso libre, no requiere atribución) — https://unsplash.com/license",
   "imagenes": [
-    { "archivo": "luz-ciudad.jpg", "origen": "https://picsum.photos/id/1067", "uso": "Banda entre manifiesto y servicios" },
-    { "archivo": "luz-noche.jpg",  "origen": "https://picsum.photos/id/249",  "uso": "Sección oscura de Desarrollo" },
-    { "archivo": "luz-escena.jpg", "origen": "https://picsum.photos/id/452",  "uso": "Columna del proceso" }
+    { "archivo": "luz-dev.jpg", "origen": "https://unsplash.com/photos/hands-typing-on-a-laptop-computer-screen-Es33oEXaRrE", "fuente": "Unsplash — foto de Bluestonex (@bluestonex_apphaus)", "uso": "Sección oscura de Desarrollo" }
   ]
 }

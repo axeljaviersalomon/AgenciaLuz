@@ -272,6 +272,20 @@ h1 em, h2 em, h3 em {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
+/* Retícula de puntos, muy sutil: la textura "de plano técnico" que hace
+   que el fondo se sienta diseñado y no un blanco liso. Sobre fondo oscuro
+   casi no se nota (puntos oscuros sobre oscuro) y eso está bien: ahí ya
+   hay halos de color haciendo ese trabajo. */
+.dotgrid {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-bg);
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: radial-gradient(rgba(23, 21, 15, 0.5) 1px, transparent 1.5px);
+  background-size: 28px 28px;
+}
+
 
 /* =============================================================
    5. BOTONES
@@ -437,6 +451,60 @@ h1 em, h2 em, h3 em {
 
 .hero__kicker { color: var(--clay); }
 
+/* Marcas de esquina: detalle "de blueprint" que suma sensación de producto
+   diseñado a medida. Sólo desde tablet: en mobile el hero ya va justo. */
+.hero__marks { display: none; }
+.hero__marks .corner {
+  position: absolute;
+  width: 16px; height: 16px;
+  opacity: 0.4;
+}
+.hero__marks .corner::before,
+.hero__marks .corner::after { content: ""; position: absolute; background: var(--ink-mute); }
+.hero__marks .corner::before { top: 50%; left: 0; right: 0; height: 1px; transform: translateY(-50%); }
+.hero__marks .corner::after  { left: 50%; top: 0; bottom: 0; width: 1px; transform: translateX(-50%); }
+.corner--tl { top: 6.5rem; left: var(--gutter); }
+.corner--tr { top: 6.5rem; right: var(--gutter); }
+.corner--bl { bottom: 2rem; left: var(--gutter); }
+.corner--br { bottom: 2rem; right: var(--gutter); }
+
+/* Círculos concéntricos: 3 anillos + 3 puntos, el mismo recurso que
+   el hero de OrlandoStudio. Visibles también en mobile (antes sólo
+   desde desktop). Se recortan contra la esquina superior derecha
+   pero dejando entrar buena parte del diseño, no apenas un cuarto;
+   gira carísimo de lento. Opacidad muy baja: es textura, no
+   protagonista. */
+.hero__rings {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  color: var(--accent);
+  opacity: 0.16;
+  pointer-events: none;
+}
+.hero__rings svg {
+  /* top/right en vw (no %) a propósito: en mobile el hero es muy alto
+     (min-height:100svh) y un % ahí se dispara; en vw el recorte queda
+     proporcional al ancho real en cualquier pantalla. Este <svg> NUNCA
+     rota — ver .hero__rings-spin más abajo — así que esta posición es
+     estable en todo momento de la animación, sin sorpresas. */
+  position: absolute;
+  top: -25vw;
+  right: -8vw;
+  width: min(76vw, 1080px);
+  height: auto;
+}
+/* La rotación va acá, en el <g> interno, nunca en el <svg>: si giraba
+   el <svg> (un cuadrado), su caja de colisión se inflaba hasta ~41%
+   en las diagonales y el círculo terminaba cruzando la línea de los
+   pilares en ciertos momentos de la vuelta. Rotando sólo el contenido,
+   el <svg> que lo contiene queda con un tamaño fijo siempre. */
+.hero__rings-spin {
+  transform-origin: 250px 250px;
+  animation: heroRingsSpin 150s linear infinite;
+}
+@keyframes heroRingsSpin { to { transform: rotate(360deg); } }
+
 .hero__title {
   font-size: var(--fs-display);
   max-width: 16ch;               /* nunca tan ancho como para cortar letras */
@@ -498,46 +566,96 @@ h1 em, h2 em, h3 em {
 
 
 /* -------------------------------------------------------------
-   BANDA DE IMAGEN — franja a sangre entre dos secciones de texto.
-   La imagen se escala 1.15 para tener margen de recorrido: main.js
-   la desplaza ~40px con el scroll y nunca deja bordes vacíos.
+   BANDA — declaración de marca SIN caja de color propia: vive sobre
+   el mismo papel que las secciones vecinas, para que la transición
+   sea invisible (nada de "aparece un bloque distinto de golpe").
+   El efecto son dos resplandores + dos anillos concéntricos con
+   movimiento continuo, en la paleta de siempre (ámbar/terracota),
+   la misma idea que ya usan .blob en otras secciones pero más viva.
    ------------------------------------------------------------- */
 .banda {
+  /* Se guarda como variable porque los anillos necesitan calcular su
+     diámetro a partir de ESTA altura: si un anillo mide más que la
+     sección, overflow:hidden le corta arriba y abajo (el bug de la
+     versión anterior). Atándolo a --banda-h, nunca puede pasarse. */
+  --banda-h: clamp(300px, 46vh, 460px);
   position: relative;
-  height: clamp(280px, 48vh, 480px);
+  height: var(--banda-h);
   overflow: hidden;
   display: grid;
   place-items: center;
   isolation: isolate;
 }
-.banda__media { position: absolute; inset: 0; z-index: -2; }
-.banda__media img {
-  width: 100%; height: 100%;
-  object-fit: cover;
-  transform: scale(1.15);
+
+.banda__fx { position: absolute; inset: 0; z-index: -1; }
+.banda__glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
   will-change: transform;
 }
-/* Velo cálido: baja el contraste de la foto para que la frase se lea */
-.banda::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background:
-    linear-gradient(180deg, rgba(21, 18, 28, 0.55), rgba(21, 18, 28, 0.72)),
-    radial-gradient(60% 60% at 50% 50%, rgba(233, 168, 190, 0.22), transparent 70%);
+.banda__glow--sun {
+  width: min(520px, 60vw);
+  aspect-ratio: 1;
+  top: -20%; left: 6%;
+  background: var(--sun);
+  opacity: 0.22;
+  animation: bandaDrift 16s var(--ease-soft) infinite alternate;
 }
+.banda__glow--rose {
+  width: min(460px, 55vw);
+  aspect-ratio: 1;
+  bottom: -24%; right: 4%;
+  background: var(--rose);
+  opacity: 0.28;
+  animation: bandaDrift 20s var(--ease-soft) infinite alternate-reverse;
+}
+@keyframes bandaDrift {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to   { transform: translate3d(6%, 8%, 0) scale(1.18); }
+}
+
+/* Círculos concéntricos: el mismo SVG del hero (.hero__rings), acá
+   centrado detrás de la frase en vez de recortado en una esquina.
+   El calc(...) primero en el width: nunca deja que el diámetro supere
+   la altura de la sección, así el círculo siempre entra completo. */
+.banda__rings {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: min(640px, 84vw, calc(var(--banda-h) * 0.94));
+  height: auto;
+  color: var(--line-strong);
+  opacity: 0.7;
+  transform: translate(-50%, -50%);
+}
+/* Rotación en el <g> interno, no en el <svg> (mismo motivo que en
+   .hero__rings-spin): así translate(-50%,-50%) queda quieto y sólo
+   gira el contenido. */
+.banda__rings-spin {
+  transform-origin: 250px 250px;
+  animation: bandaRingsSpin 150s linear infinite;
+}
+@keyframes bandaRingsSpin { to { transform: rotate(360deg); } }
+
 .banda__quote {
-  max-width: 22ch;
+  position: relative;
+  z-index: 1;
+  max-width: 24ch;
   padding-inline: var(--gutter);
   text-align: center;
-  font-family: var(--serif);
-  font-size: clamp(1.5rem, 4vw, 2.7rem);
-  line-height: 1.15;
-  color: #FFFFFF;
+  font-family: var(--sans);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  font-size: clamp(1.6rem, 5vw, 3rem);
+  line-height: 1.12;
+  color: var(--ink);
   text-wrap: balance;
 }
-.banda__quote em { font-style: italic; color: var(--rose); }
+.banda__quote em { font-style: normal; color: var(--clay); }
+/* .word: sólo existe si initBandaQuote (main.js) corrió — envuelve cada
+   palabra para poder animarlas de a una. display:inline-block es lo que
+   permite que el transform/blur de cada palabra funcione por separado. */
+.banda__quote .word { display: inline-block; will-change: transform, opacity, filter; }
 
 
 /* =============================================================
@@ -716,6 +834,51 @@ h1 em, h2 em, h3 em {
   font-weight: 500;
 }
 
+/* Tarjeta de marca: la 8va celda de la grilla. No es un servicio, es el
+   "punto" de identidad (el dot ámbar de siempre) puesto a trabajar acá
+   adentro. En desktop ocupa el doble de ancho (ver breakpoint 960px)
+   para que la fila de 7 servicios cierre justa, sin celdas vacías. */
+.devcard--brand {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  align-content: center;
+  gap: 0.7rem;
+  background: linear-gradient(135deg, rgba(233, 168, 190, 0.14), rgba(232, 163, 23, 0.10));
+  border-color: rgba(233, 168, 190, 0.32);
+}
+.devcard--brand__ring {
+  position: absolute;
+  top: 50%; right: -14%;
+  width: 220px;
+  aspect-ratio: 1;
+  border: 1px solid rgba(232, 163, 23, 0.25);
+  border-radius: 50%;
+  transform: translateY(-50%);
+  animation: bandaSpin 70s linear infinite;
+  pointer-events: none;
+}
+.devcard--brand__dot {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--sun);
+  box-shadow: 0 0 16px 3px rgba(232, 163, 23, 0.55);
+}
+.devcard--brand__brand {
+  position: relative;
+  color: var(--rose);
+  letter-spacing: 0.18em;
+}
+.devcard--brand__quote {
+  position: relative;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.2rem;
+  line-height: 1.3;
+  color: var(--dark-ink);
+  max-width: 30ch;
+}
+
 @media (hover: hover) and (pointer: fine) {
   .devcard:hover {
     transform: translateY(-4px);
@@ -745,27 +908,11 @@ h1 em, h2 em, h3 em {
 /* =============================================================
    11. PROCESO — línea de tiempo vertical
    La línea es un borde izquierdo en la lista; cada punto es un
-   ::before posicionado sobre ese borde.
+   ::before posicionado sobre ese borde. Sin imagen: la línea de
+   tiempo ocupa todo el ancho disponible, limitada para que los
+   párrafos no se estiren de más en pantallas anchas.
    ============================================================= */
-.proceso__inner { display: grid; gap: clamp(2.5rem, 6vw, 4rem); }
-
-.proceso__figure {
-  margin: 0;
-  display: grid;
-  gap: 0.75rem;
-}
-.proceso__figure img {
-  width: 100%;
-  aspect-ratio: 4 / 5;
-  object-fit: cover;
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-md);
-}
-.proceso__figure figcaption {
-  font-size: 0.86rem;
-  color: var(--ink-mute);
-  font-style: italic;
-}
+.proceso__inner { display: grid; gap: clamp(2.5rem, 6vw, 4rem); max-width: 46rem; }
 
 .timeline {
   list-style: none;
@@ -794,8 +941,18 @@ h1 em, h2 em, h3 em {
 /* =============================================================
    12. PÚBLICO
    ============================================================= */
-.publico { background: var(--paper-2); border-block: 1px solid var(--line); }
-.publico__grid { list-style: none; padding: 0; display: grid; gap: var(--gap); }
+.publico { background: var(--paper-2); border-block: 1px solid var(--line); overflow: hidden; }
+.publico__grid { list-style: none; padding: 0; display: grid; gap: var(--gap); position: relative; z-index: 1; }
+
+/* Canvas de la malla de puntos: de fondo, detrás de las tarjetas
+   (que ya tienen su propio fondo sólido, así que nunca compite en
+   legibilidad). main.js la dimensiona y anima. */
+.dotwave {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
 
 .chip {
   padding: clamp(1.3rem, 3vw, 1.7rem);
@@ -947,16 +1104,35 @@ h1 em, h2 em, h3 em {
 /* =============================================================
    15. FOOTER + WHATSAPP FLOTANTE
    ============================================================= */
+/* Footer oscuro: cierra la página en el mismo casi-negro que .dev y el
+   final de .contacto, con un halo ámbar apenas insinuado para que la
+   "luz" de la marca también aparezca en el último tramo del sitio. */
 .footer {
+  position: relative;
   padding-block: 3rem 2.5rem;
-  border-top: 1px solid var(--line);
-  background: var(--paper-2);
+  border-top: 1px solid var(--dark-line);
+  background: var(--dark);
+  color: var(--dark-soft);
+  overflow: hidden;
 }
-.footer__inner { display: grid; gap: 1.5rem; }
-.footer__nav { display: flex; flex-wrap: wrap; gap: 0.75rem 1.5rem; color: var(--ink-soft); font-size: 0.92rem; }
+.footer::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  width: min(640px, 100%);
+  aspect-ratio: 1;
+  top: -70%; left: 50%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(232, 163, 23, 0.12), transparent 65%);
+  pointer-events: none;
+}
+.footer__inner { position: relative; z-index: 1; display: grid; gap: 1.5rem; }
+.footer .brand { color: var(--dark-ink); }
+.footer__nav { display: flex; flex-wrap: wrap; gap: 0.75rem 1.5rem; color: var(--dark-soft); font-size: 0.92rem; }
 .footer__nav a { min-height: 32px; display: inline-flex; align-items: center; transition: color 0.25s var(--ease-out); }
-@media (hover: hover) and (pointer: fine) { .footer__nav a:hover { color: var(--accent); } }
-.footer__legal { color: var(--ink-mute); font-size: 0.85rem; }
+@media (hover: hover) and (pointer: fine) { .footer__nav a:hover { color: var(--rose); } }
+.footer__legal { color: var(--dark-mute); font-size: 0.85rem; }
 
 .wa {
   position: fixed;
@@ -1047,19 +1223,22 @@ html.anim .reveal.is-in { opacity: 1; transform: none; }
 
   .cards     { grid-template-columns: repeat(3, 1fr); }
   .dev__grid { grid-template-columns: repeat(3, 1fr); }
+  /* 7 servicios + 1 tarjeta de marca = 8 celdas. En 3 columnas, 7 solas
+     dejarían la última fila con 2 huecos vacíos; que la de marca ocupe
+     el doble de ancho cierra la fila exacta (1 + 2 = 3). */
+  .devcard--brand { grid-column: span 2; }
   .publico__grid { grid-template-columns: repeat(4, 1fr); }
 
   /* Sub-hero de desarrollo: texto | imagen */
   .dev__top { grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); align-items: center; }
 
-  /* Proceso: pasos a la izquierda, imagen fija a la derecha mientras se leen */
-  .proceso__inner { grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); align-items: start; }
-  .proceso__figure { position: sticky; top: 110px; }
-
   /* Contacto en dos columnas: texto a la izquierda, formulario a la derecha.
      minmax(0,1fr) y no 1fr: sin el minmax, el ancho mínimo del contenido
      (opciones largas del select) desbalancea las dos columnas */
   .contacto__inner { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 4rem; align-items: start; }
+
+  /* Marcas de esquina del hero: sólo hay aire para que luzcan desde acá */
+  .hero__marks { display: block; }
 
   /* Indicador de scroll: sólo desde acá, donde hay altura de sobra */
   .hero__scroll {
@@ -1115,9 +1294,10 @@ html.anim .reveal.is-in { opacity: 1; transform: none; }
   .luz { transition: none; }
 
   /* Efectos con loop infinito: se detienen (son los realmente intrusivos) */
-  .blob { animation: none; }
+  .blob, .banda__glow, .banda__rings-spin, .dotwave,
+  .devcard--brand__ring, .hero__rings-spin { animation: none; }
   .marquee__track { animation: none; }
-  .banda__media img, .dev__figure img { transform: scale(1.02); }
+  .dev__figure img { transform: scale(1.02); }
 
   /* Los reveals se reducen a un fade sin desplazamiento */
   html.anim .reveal { transform: none; }
