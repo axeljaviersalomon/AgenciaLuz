@@ -708,6 +708,15 @@ h1 em, h2 em, h3 em {
   place-items: center;
   isolation: isolate;
 }
+/* En mobile el 46vh dejaba mucho hueco vacío arriba/abajo del texto
+   (la frase, con fuente chica, no llegaba a ocupar esa altura). Se
+   baja el mínimo y se sube el tamaño de fuente relativo al viewport
+   para que el texto llene mejor la sección. Los anillos escalan solos
+   (dependen de --banda-h) así que nunca quedan recortados: sólo se
+   achican en proporción, siempre completos. */
+@media (max-width: 719px) {
+  .banda { --banda-h: clamp(220px, 30vh, 320px); padding-block: clamp(2rem, 9vw, 2.75rem); }
+}
 
 .banda__fx { position: absolute; inset: 0; z-index: -1; }
 .banda__glow {
@@ -768,8 +777,11 @@ h1 em, h2 em, h3 em {
   font-family: var(--sans);
   font-weight: 600;
   letter-spacing: -0.02em;
-  font-size: clamp(1.6rem, 5vw, 3rem);
-  line-height: 1.12;
+  /* 5vw se queda corto en pantallas angostas (queda en el piso del
+     clamp, chica y con mucho aire alrededor); con más vw la fuente
+     crece junto con el hueco que hay que llenar. */
+  font-size: clamp(1.6rem, 8vw, 3rem);
+  line-height: 1.16;
   color: var(--ink);
   text-wrap: balance;
 }

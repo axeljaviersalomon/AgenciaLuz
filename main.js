@@ -625,7 +625,7 @@
 
       summary.addEventListener("click", function (e) {
         e.preventDefault();
-        if (item.classList.contains("is-animating")) return;
+        if (anim) anim.cancel();   // corta cualquier animación a medio camino, sin trabarse
 
         if (item.open) closeItem(); else openItem();
       });
@@ -635,6 +635,7 @@
         item.open = true;
         var target = body.scrollHeight;
         body.style.overflow = "hidden";
+        body.style.willChange = "height";
         anim = body.animate(
           { height: ["0px", target + "px"] },
           { duration: 320, easing: EASE }
@@ -646,6 +647,7 @@
         item.classList.add("is-animating");
         var start = body.scrollHeight;
         body.style.overflow = "hidden";
+        body.style.willChange = "height";
         anim = body.animate(
           { height: [start + "px", "0px"] },
           { duration: 260, easing: EASE }
@@ -657,9 +659,15 @@
       }
 
       function finish() {
+        anim = null;
         body.style.height = "";
         body.style.overflow = "";
+        body.style.willChange = "";
         item.classList.remove("is-animating");
+        // Todo lo que está debajo del acordeón se movió: se corrige la
+        // posición de los triggers de scroll una sola vez acá, en vez
+        // de en cada frame de la animación (eso era lo que trababa).
+        if (window.ScrollTrigger) ScrollTrigger.refresh();
       }
     });
   }
@@ -765,7 +773,16 @@
     // GSAP se usa sólo si cargó. Si el archivo faltara, el sitio
     // sigue siendo perfectamente legible y navegable.
     if (window.gsap && window.ScrollTrigger) {
-      try { gsap.registerPlugin(ScrollTrigger); } catch (err) {}
+      try {
+        gsap.registerPlugin(ScrollTrigger);
+        // Por defecto ScrollTrigger recalcula TODAS las posiciones en
+        // cada resize del documento, incluido el que provoca el propio
+        // acordeón de FAQ al crecer/achicarse (dispara un ResizeObserver
+        // interno en cada frame de esa animación). Eso es lo que la
+        // ponía "trabada": se limita a recalcular sólo en los momentos
+        // que importan, y initFaqAnim pide un refresh puntual al terminar.
+        ScrollTrigger.config({ autoRefreshEvents: "visibilitychange,DOMContentLoaded,load" });
+      } catch (err) {}
       safe(initHero, "initHero");
       safe(initBandaQuote, "initBandaQuote");
       safe(initReveals, "initReveals");
