@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<!-- ============================================================
+     SEO on-page
+     ============================================================ -->
+<title>Agencia Luz — Marketing Integrado y Desarrollo Digital</title>
+<meta name="description" content="Agencia Luz: estrategia, contenido, performance y desarrollo digital trabajando juntos. Diagnóstico gratuito para marcas que quieren crecer en serio." />
+<meta name="theme-color" content="#FAF8F4" />
+<link rel="canonical" href="https://TU-DOMINIO.com/" />
+
+<!-- Open Graph / redes -->
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="es_AR" />
+<meta property="og:site_name" content="Agencia Luz" />
+<meta property="og:title" content="Agencia Luz — Marketing Integrado y Desarrollo Digital" />
+<meta property="og:description" content="Estrategia, contenido, performance y tecnología trabajando juntos para convertir visibilidad en resultados reales." />
+<meta property="og:url" content="https://TU-DOMINIO.com/" />
+<meta name="twitter:card" content="summary_large_image" />
+
+<!-- Favicon SVG inline (sin archivo externo: cero peticiones extra) -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23FAF8F4'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%2316325C'/%3E%3C/svg%3E" />
+
+<!-- ============================================================
+     Tipografías — display:swap para evitar bloqueo de render (LCP)
+     Instrument Serif (display) · Inter (texto) · JetBrains Mono (acentos)
+     ============================================================ -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" />
+
+<!-- Hoja de estilos propia. ?v= = cache-busting: subir este número en cada deploy -->
+<link rel="stylesheet" href="styles.css?v=20260903-3" />
+
+<!-- ============================================================
+     Datos estructurados (schema.org) — Organization + ProfessionalService
+     ⚠️ PLACEHOLDER: reemplazar TU-DOMINIO, TU-EMAIL y TU-NUMERO por los datos reales
+     ============================================================ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "Agencia Luz",
+  "description": "Agencia de marketing integrado y desarrollo digital: estrategia, contenido, performance, desarrollo web, agentes de IA y automatización de procesos.",
+  "url": "https://TU-DOMINIO.com/",
+  "email": "TU-EMAIL@dominio.com",
+  "telephone": "+54 9 TU-NUMERO",
+  "areaServed": "AR",
+  "priceRange": "$$",
+  "address": { "@type": "PostalAddress", "addressCountry": "AR" },
+  "sameAs": ["https://instagram.com/TU-USUARIO"],
+  "makesOffer": [
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Análisis estratégico del negocio" } },
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Estrategia multicanal" } },
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Community Manager" } },
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Creación de contenido estratégico" } },
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Producción audiovisual, UGC y dron" } },
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Gestión de anuncios pagos" } },
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Desarrollo web y soluciones digitales" } }
+  ]
+}
+</script>
+</head>
+
+<body>
+
+<!-- Enlace de salto: primer tabulador para lectores de pantalla y teclado -->
+<a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+<!-- ============================================================
+     CAPA DE LUZ — la interacción firma de la marca.
+     Gradiente radial cálido que sigue al cursor (variables --mx/--my).
+     Decorativa: aria-hidden y pointer-events:none.
+     ============================================================ -->
+<div class="luz" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<!-- ============================================================
+     NAVEGACIÓN — transparente arriba, sólida al hacer scroll.
+     En mobile se despliega en panel completo (botón hamburguesa).
+     ============================================================ -->
+<header class="nav" id="nav">
+  <div class="nav__inner">
+    <a class="brand" href="#inicio" aria-label="Agencia Luz — inicio">
+      <span class="brand__dot" aria-hidden="true"></span>
+      <span class="brand__name">Agencia&nbsp;Luz</span>
+    </a>
+
+    <button class="nav__toggle" id="navToggle" type="button"
+            aria-expanded="false" aria-controls="navMenu" aria-label="Abrir menú">
+      <span class="nav__bar" aria-hidden="true"></span>
+      <span class="nav__bar" aria-hidden="true"></span>
+    </button>
+
+    <nav class="nav__menu" id="navMenu" aria-label="Navegación principal">
+      <a href="#servicios">Servicios</a>
+      <a href="#desarrollo">Desarrollo</a>
+      <a href="#proceso">Proceso</a>
+      <a href="#faq">Preguntas</a>
+      <a class="btn btn--sm btn--primary" href="#contacto">Diagnóstico gratuito</a>
+    </nav>
+  </div>
+</header>
+
+<main id="contenido">
+
+  <!-- ==========================================================
+       HERO — tipografía protagonista sobre la capa de luz.
+       Sin imagen: el LCP es texto, así carga instantáneo.
+       ========================================================== -->
+  <section class="hero" id="inicio">
+    <div class="wrap hero__inner">
+      <h1 class="hero__title">
+        Marketing y tecnología para marcas que quieren
+        <em>crecer en serio</em>
+      </h1>
+
+      <p class="hero__sub">
+        Estrategia, contenido, performance y tecnología trabajando juntos
+        para convertir visibilidad en resultados reales.
+      </p>
+
+      <div class="hero__actions">
+        <a class="btn btn--primary" href="#contacto">Solicitá tu diagnóstico gratuito</a>
+        <!-- ⚠️ PLACEHOLDER WhatsApp: reemplazar TU-NUMERO por el número en formato internacional sin signos (ej. 5491122334455) -->
+        <a class="btn btn--ghost" href="https://wa.me/TU-NUMERO?text=Hola%20Agencia%20Luz%2C%20quiero%20mi%20diagn%C3%B3stico%20gratuito"
+           target="_blank" rel="noopener noreferrer">Escribinos por WhatsApp</a>
+      </div>
+
+      <ul class="hero__pillars" aria-label="Áreas de trabajo">
+        <li>Estrategia</li>
+        <li>Contenido</li>
+        <li>Performance</li>
+        <li>Tecnología</li>
+      </ul>
+    </div>
+
+    <div class="hero__scroll" aria-hidden="true">
+      <span class="hero__scroll-line"></span>
+      <span class="mono">Scroll</span>
+    </div>
+  </section>
+
+  <!-- ==========================================================
+       MANIFIESTO — problema / solución / resultado
+       ========================================================== -->
+  <section class="section manifiesto" id="manifiesto" aria-labelledby="manifiesto-title">
+    <!-- Mancha de color difusa: rompe el plano del fondo. Decorativa. -->
+    <span class="blob blob--rose" aria-hidden="true"></span>
+    <div class="wrap">
+      <h2 class="section__title reveal" id="manifiesto-title">
+        No es hacer posteos.<br />Es construir una <em>marca que venda</em>.
+      </h2>
+
+      <div class="pillars">
+        <article class="pillar reveal">
+          <span class="pillar__num mono">01</span>
+          <h3 class="pillar__title">El problema</h3>
+          <p>
+            Publicar sin estrategia no escala. Cuando cada canal va por su lado,
+            el mensaje se diluye y se pierde tiempo, dinero y oportunidades.
+          </p>
+        </article>
+
+        <article class="pillar reveal">
+          <span class="pillar__num mono">02</span>
+          <h3 class="pillar__title">La solución</h3>
+          <p>
+            Marketing integrado: analizamos el negocio, definimos la estrategia y
+            ejecutamos contenido, anuncios y desarrollo con un mismo objetivo.
+          </p>
+        </article>
+
+        <article class="pillar reveal">
+          <span class="pillar__num mono">03</span>
+          <h3 class="pillar__title">El resultado</h3>
+          <p>
+            Una marca que se ve profesional, comunica con intención y convierte.
+            Sin decisiones a ciegas.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================
+       BANDA DE LUZ — imagen ancha a sangre con parallax suave.
+       Corta el ritmo entre dos secciones de texto y hace de puente
+       cromático hacia el bloque oscuro de Desarrollo.
+       ========================================================== -->
+  <section class="banda" aria-label="Ciudad al atardecer">
+    <div class="banda__media">
+      <!-- data-parallax: main.js la desplaza 40px con el scroll. Dimensiones
+           explícitas para que no haya salto de layout (CLS) al cargar. -->
+      <img src="assets/img/luz-ciudad.jpg" alt="Vista aérea de una ciudad al atardecer"
+           width="1600" height="900" loading="lazy" decoding="async" data-parallax />
+    </div>
+    <p class="banda__quote reveal">
+      Visibilidad sin estrategia es ruido.<br /><em>Nosotros hacemos que se entienda.</em>
+    </p>
+  </section>
+
+  <!-- ==========================================================
+       SERVICIOS — grilla con ícono por servicio.
+       El servicio 07 (Desarrollo) es una tarjeta ancha que lleva
+       a su propia sección destacada más abajo.
+       ========================================================== -->
+  <section class="section servicios" id="servicios" aria-labelledby="servicios-title">
+    <div class="wrap">
+      <header class="section__head reveal">
+        <p class="kicker">Servicios</p>
+        <h2 class="section__title" id="servicios-title">¿Cómo te puedo ayudar?</h2>
+      </header>
+
+      <div class="cards">
+
+        <article class="card reveal">
+          <span class="card__num mono">01</span>
+          <span class="card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 20h18" /><path d="M6 20V12" /><path d="M11 20V7" /><path d="M16 20v-5" /><path d="M21 20V4" />
+            </svg>
+          </span>
+          <h3 class="card__title">Análisis estratégico del negocio</h3>
+          <p>Detectamos errores y oportunidades, definimos prioridades reales y evitamos inversiones sin retorno.</p>
+        </article>
+
+        <article class="card reveal">
+          <span class="card__num mono">02</span>
+          <span class="card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3" /><circle cx="5" cy="5" r="2" /><circle cx="19" cy="5" r="2" /><circle cx="5" cy="19" r="2" /><circle cx="19" cy="19" r="2" />
+              <path d="M6.6 6.6 10 10M17.4 6.6 14 10M6.6 17.4 10 14M17.4 17.4 14 14" />
+            </svg>
+          </span>
+          <h3 class="card__title">Estrategia multicanal</h3>
+          <p>Instagram, TikTok, YouTube, web y anuncios con un mismo mensaje: más alcance y crecimiento sostenible.</p>
+        </article>
+
+        <article class="card reveal">
+          <span class="card__num mono">03</span>
+          <span class="card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 20v-1.5a3.5 3.5 0 0 0-3.5-3.5h-5A3.5 3.5 0 0 0 4 18.5V20" />
+              <circle cx="10" cy="8" r="3.2" /><path d="M17 11.5a3 3 0 0 0 0-6" /><path d="M20 20v-1.2a3.4 3.4 0 0 0-2.4-3.2" />
+            </svg>
+          </span>
+          <h3 class="card__title">Community Manager</h3>
+          <p>Gestión profesional de redes: comunidad activa, respuestas a tiempo y una marca confiable.</p>
+        </article>
+
+        <article class="card reveal">
+          <span class="card__num mono">04</span>
+          <span class="card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="16" rx="3" /><path d="M3 9h18" /><path d="M10 13.2v3.6l3.4-1.8z" />
+            </svg>
+          </span>
+          <h3 class="card__title">Creación de contenido estratégico</h3>
+          <p>Reels, carruseles y stories con ideas, guiones y planificación. Cada formato, optimizado para su objetivo.</p>
+        </article>
+
+        <article class="card reveal">
+          <span class="card__num mono">05</span>
+          <span class="card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 7h9a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z" />
+              <path d="m15 11 5-3v8l-5-3z" /><circle cx="7" cy="12" r="1.6" />
+            </svg>
+          </span>
+          <h3 class="card__title">UGC, filmmaker, fotografía y dron</h3>
+          <p>Producción audiovisual profesional para marcas que necesitan verse premium en cada pieza.</p>
+        </article>
+
+        <article class="card reveal">
+          <span class="card__num mono">06</span>
+          <span class="card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="8.5" /><circle cx="12" cy="12" r="4.5" /><circle cx="12" cy="12" r="1" />
+              <path d="M12 3.5V1M12 23v-2.5M3.5 12H1M23 12h-2.5" />
+            </svg>
+          </span>
+          <h3 class="card__title">Gestión de anuncios pagos</h3>
+          <p>Meta Ads, TikTok Ads y Google Ads con foco en conversión y ROI medible, no en métricas de vanidad.</p>
+        </article>
+
+        <!-- Tarjeta ancha: enlace a la sección destacada -->
+        <a class="card card--feature reveal" href="#desarrollo">
+          <span class="card__num mono">07</span>
+          <div class="card--feature__body">
+            <h3 class="card__title">Desarrollo Web y Soluciones Digitales</h3>
+            <p>
+              Webs y e-commerce a medida, aplicaciones, agentes de IA y automatización.
+              El área con más potencial de la agencia.
+            </p>
+          </div>
+          <span class="card--feature__cta mono" aria-hidden="true">Ver en detalle →</span>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================
+       DESARROLLO WEB — bloque destacado con jerarquía propia:
+       fondo diferenciado, sub-hero, sub-grilla de 7 líneas de
+       servicio y sub-CTA independiente.
+       ========================================================== -->
+  <section class="dev" id="desarrollo" aria-labelledby="dev-title">
+    <div class="wrap">
+
+      <!-- Sub-hero del bloque: texto a la izquierda, imagen a la derecha (desktop) -->
+      <div class="dev__top">
+        <header class="dev__hero">
+          <p class="kicker kicker--rose reveal">Servicio destacado</p>
+          <h2 class="dev__title reveal" id="dev-title">
+            No solo hacemos una web bonita: construimos la
+            <em>infraestructura digital</em> que hace que tu negocio funcione solo.
+          </h2>
+          <p class="dev__lede reveal">
+            Una web estática es una foto. Nosotros armamos un sistema: tecnología que
+            ahorra horas, reduce errores y escala con el negocio en lugar de frenarlo.
+          </p>
+        </header>
+
+        <figure class="dev__figure reveal">
+          <img src="assets/img/luz-noche.jpg" alt="Luces de una ciudad reflejadas en el agua de noche"
+               width="1400" height="900" loading="lazy" decoding="async" data-parallax />
+        </figure>
+      </div>
+
+      <!-- Cinta de palabras en movimiento continuo. Aporta ritmo sin robar
+           atención: velocidad lenta, sin bordes duros (se desvanece a los lados).
+           Se detiene con prefers-reduced-motion. -->
+      <div class="marquee" aria-hidden="true">
+        <div class="marquee__track">
+          <span>Landing pages</span><span>E-commerce</span><span>Apps a medida</span>
+          <span>Agentes de IA</span><span>Automatización</span><span>Integraciones</span>
+          <span>Mantenimiento</span>
+          <span>Landing pages</span><span>E-commerce</span><span>Apps a medida</span>
+          <span>Agentes de IA</span><span>Automatización</span><span>Integraciones</span>
+          <span>Mantenimiento</span>
+        </div>
+      </div>
+
+      <!-- Sub-grilla: 7 líneas de servicio, cada una con micro-beneficio -->
+      <div class="dev__grid">
+
+        <article class="devcard reveal">
+          <span class="card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2.5" y="4" width="19" height="15" rx="2.5" /><path d="M2.5 8.5h19" /><path d="M6 12h7M6 15h4" />
+            </svg>
+          </span>
+          <h3 class="devcard__title">Landing pages y sitios a medida</h3>
+          <p>Diseño profesional y UX clara, pensados para que el visitante haga algo, no solo mire.</p>
+          <p class="devcard__benefit"><span aria-hidden="true">→</span> Más consultas con el mismo tráfico.</p>
+        </article>
+
+        <article class="devcard reveal">
+          <span class="card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 6h2l2 10h11l2-7H6.2" /><circle cx="9.5" cy="19" r="1.4" /><circle cx="17" cy="19" r="1.4" />
+            </svg>
+          </span>
+          <h3 class="devcard__title">E-commerce</h3>
+          <p>Tiendas online integradas a pasarelas de pago y logística, con productos que se cargan y actualizan sin dolor.</p>
+          <p class="devcard__benefit"><span aria-hidden="true">→</span> Vendés también mientras dormís.</p>
+        </article>
+
+        <article class="devcard reveal">
+          <span class="card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2.5" /><path d="M3 9h18M9 21V9" /><path d="M13 13h4M13 16.5h4" />
+            </svg>
+          </span>
+          <h3 class="devcard__title">Aplicaciones web a medida</h3>
+          <p>Herramientas internas hechas a medida: dashboards, portales de clientes y sistemas de gestión simples.</p>
+          <p class="devcard__benefit"><span aria-hidden="true">→</span> Se termina el Excel compartido.</p>
+        </article>
+
+        <article class="devcard reveal">
+          <span class="card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="4" y="7" width="16" height="12" rx="3" /><path d="M12 7V4" /><circle cx="12" cy="3" r="1.2" />
+              <circle cx="9" cy="13" r="1.2" /><circle cx="15" cy="13" r="1.2" /><path d="M9.5 16.5h5" />
+            </svg>
+          </span>
+          <h3 class="devcard__title">Agentes de IA</h3>
+          <p>Asistentes entrenados con la información de tu negocio para atender, calificar leads y vender en WhatsApp, Instagram o la web.</p>
+          <p class="devcard__benefit"><span aria-hidden="true">→</span> Respuesta en segundos, 24/7.</p>
+        </article>
+
+        <article class="devcard reveal">
+          <span class="card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3v3M12 18v3M3 12h3M18 12h3" /><path d="M5.6 5.6 7.8 7.8M16.2 16.2l2.2 2.2M18.4 5.6 16.2 7.8M7.8 16.2l-2.2 2.2" />
+              <circle cx="12" cy="12" r="3.2" />
+            </svg>
+          </span>
+          <h3 class="devcard__title">Automatización de procesos</h3>
+          <p>Tareas repetitivas resueltas solas: carga de datos, seguimiento de leads, reportes y notificaciones.</p>
+          <p class="devcard__benefit"><span aria-hidden="true">→</span> Horas del equipo recuperadas cada semana.</p>
+        </article>
+
+        <article class="devcard reveal">
+          <span class="card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 8H6.5A3.5 3.5 0 0 0 3 11.5v0A3.5 3.5 0 0 0 6.5 15H9" />
+              <path d="M15 8h2.5A3.5 3.5 0 0 1 21 11.5v0A3.5 3.5 0 0 1 17.5 15H15" /><path d="M8 11.5h8" />
+            </svg>
+          </span>
+          <h3 class="devcard__title">Integraciones y flujos de trabajo</h3>
+          <p>Redes, CRM, email marketing y e-commerce conectados para que la información fluya sin copiarla a mano.</p>
+          <p class="devcard__benefit"><span aria-hidden="true">→</span> Un solo dato, siempre actualizado.</p>
+        </article>
+
+        <article class="devcard reveal">
+          <span class="card__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 19V9l8-5 8 5v10" /><path d="M4 19h16" /><path d="M10 19v-5h4v5" /><path d="M20 6.5V4h-3" />
+            </svg>
+          </span>
+          <h3 class="devcard__title">Mantenimiento y escalabilidad</h3>
+          <p>Soporte continuo: lo que hoy resuelve a una persona, mañana tiene que resolver a un equipo entero.</p>
+          <p class="devcard__benefit"><span aria-hidden="true">→</span> La tecnología crece con vos.</p>
+        </article>
+
+      </div>
+
+      <!-- Sub-CTA propio del bloque -->
+      <div class="dev__cta reveal">
+        <p>¿Tenés una idea, un proceso que te come el día o una web que quedó vieja?</p>
+        <a class="btn btn--primary" href="#contacto">Contame qué necesitás</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==========================================================
+       PROCESO — línea de tiempo vertical de 5 pasos
+       ========================================================== -->
+  <section class="section proceso" id="proceso" aria-labelledby="proceso-title">
+    <div class="wrap">
+      <header class="section__head reveal">
+        <p class="kicker">Método</p>
+        <h2 class="section__title" id="proceso-title">Mi forma de trabajar</h2>
+      </header>
+
+      <div class="proceso__inner">
+      <ol class="timeline">
+        <li class="step reveal">
+          <span class="step__num mono">01</span>
+          <h3 class="step__title">Análisis del negocio</h3>
+          <p>Qué vendés, a quién y con qué recursos. Sin diagnóstico no hay estrategia: hay suposiciones.</p>
+        </li>
+        <li class="step reveal">
+          <span class="step__num mono">02</span>
+          <h3 class="step__title">Definición de estrategia</h3>
+          <p>Objetivos, canales y prioridades. Queda por escrito para que todos sepan hacia dónde vamos.</p>
+        </li>
+        <li class="step reveal">
+          <span class="step__num mono">03</span>
+          <h3 class="step__title">Creación de contenido y activos</h3>
+          <p>Piezas, guiones, fotos, video y desarrollo: todo lo que la estrategia necesita para existir.</p>
+        </li>
+        <li class="step reveal">
+          <span class="step__num mono">04</span>
+          <h3 class="step__title">Ejecución multicanal</h3>
+          <p>Publicaciones, campañas y automatizaciones en simultáneo, con el mismo mensaje en cada canal.</p>
+        </li>
+        <li class="step reveal">
+          <span class="step__num mono">05</span>
+          <h3 class="step__title">Medición y optimización</h3>
+          <p>Miramos los números, cortamos lo que no rinde y duplicamos lo que sí. El plan se ajusta con datos.</p>
+        </li>
+      </ol>
+
+      <!-- Imagen vertical que acompaña el recorrido. Sticky en desktop:
+           queda fija mientras se leen los cinco pasos. -->
+      <figure class="proceso__figure reveal">
+        <img src="assets/img/luz-escena.jpg" alt="Luces de escenario durante una producción audiovisual"
+             width="1100" height="1400" loading="lazy" decoding="async" />
+        <figcaption>Producción, estrategia y código: un mismo objetivo.</figcaption>
+      </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================
+       PARA QUIÉN
+       ========================================================== -->
+  <section class="section publico" id="publico" aria-labelledby="publico-title">
+    <div class="wrap">
+      <header class="section__head reveal">
+        <p class="kicker">Perfil</p>
+        <h2 class="section__title" id="publico-title">¿Para quién es este servicio?</h2>
+      </header>
+
+      <ul class="publico__grid">
+        <li class="chip reveal">
+          <h3>Marcas personales</h3>
+          <p>Profesionales con audiencia que necesitan convertirla en clientes.</p>
+        </li>
+        <li class="chip reveal">
+          <h3>Emprendedores</h3>
+          <p>Proyectos que arrancaron por instinto y ahora necesitan un plan.</p>
+        </li>
+        <li class="chip reveal">
+          <h3>Negocios B2C</h3>
+          <p>Comercios y servicios que venden a personas y compiten por atención.</p>
+        </li>
+        <li class="chip reveal">
+          <h3>Empresas</h3>
+          <p>Equipos que quieren profesionalizar su marketing y ordenar su tecnología.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ==========================================================
+       FAQ — acordeón con <details>: accesible y funciona sin JS
+       ========================================================== -->
+  <section class="section faq" id="faq" aria-labelledby="faq-title">
+    <div class="wrap wrap--narrow">
+      <header class="section__head reveal">
+        <p class="kicker">Preguntas frecuentes</p>
+        <h2 class="section__title" id="faq-title">Lo que suelen preguntarnos antes de empezar</h2>
+      </header>
+
+      <div class="faq__list">
+        <details class="faq__item reveal" open>
+          <summary>¿Trabajás con planes mensuales o por proyecto?</summary>
+          <div class="faq__body"><p>Las dos modalidades son posibles. Redes y anuncios funcionan mejor en formato mensual; desarrollo y producción audiovisual suelen cerrarse por proyecto.</p></div>
+        </details>
+
+        <details class="faq__item reveal">
+          <summary>¿En cuánto tiempo se ven resultados?</summary>
+          <div class="faq__body"><p>Es progresivo: algunas cosas se notan en semanas y otras en meses, según el punto de partida. No prometemos números mágicos.</p></div>
+        </details>
+
+        <details class="faq__item reveal">
+          <summary>¿Puedo contratar solo un servicio?</summary>
+          <div class="faq__body"><p>Sí, podés empezar por donde más te aprieta. El mayor impacto igual aparece cuando los servicios trabajan integrados.</p></div>
+        </details>
+
+        <details class="faq__item reveal">
+          <summary>¿Qué necesito tener listo para arrancar una web o una app?</summary>
+          <div class="faq__body"><p>Menos de lo que pensás: una idea clara del objetivo y de a quién le hablás. Estructura, textos, diseño, dominio y hosting los armamos nosotros.</p></div>
+        </details>
+
+        <details class="faq__item reveal">
+          <summary>¿Un agente de IA o una automatización sirven para un negocio chico?</summary>
+          <div class="faq__body"><p>Sobre todo para un negocio chico: son los equipos reducidos los que más pierden respondiendo lo mismo veinte veces al día. Empezamos por el proceso más repetitivo y lo medimos en horas ahorradas.</p></div>
+        </details>
+
+        <details class="faq__item reveal">
+          <summary>¿La web queda a mi nombre? ¿Y si después quiero cambiar algo?</summary>
+          <div class="faq__body"><p>Sí: dominio, hosting y proyecto quedan a tu nombre, sin atarte a nosotros. Después podés tomar un plan de mantenimiento o pedir cambios puntuales.</p></div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================
+       CTA FINAL + FORMULARIO
+       ========================================================== -->
+  <section class="section contacto" id="contacto" aria-labelledby="contacto-title">
+    <!-- Mancha ámbar difusa detrás del bloque de cierre. Decorativa. -->
+    <span class="blob blob--sun" aria-hidden="true"></span>
+    <div class="wrap contacto__inner">
+
+      <div class="contacto__intro">
+        <h2 class="section__title reveal" id="contacto-title">
+          Si querés dejar de improvisar y empezar a hacer marketing con
+          <em>estrategia</em>, este es el momento.
+        </h2>
+        <p class="contacto__lede reveal">
+          Contanos en qué está tu negocio hoy y te devolvemos un diagnóstico gratuito:
+          qué está fallando y por dónde conviene empezar.
+        </p>
+
+        <ul class="contacto__data reveal">
+          <li>
+            <span class="mono">WhatsApp</span>
+            <!-- ⚠️ PLACEHOLDER: reemplazar TU-NUMERO -->
+            <a href="https://wa.me/TU-NUMERO" target="_blank" rel="noopener noreferrer">+54 9 TU-NUMERO</a>
+          </li>
+          <li>
+            <span class="mono">Email</span>
+            <!-- ⚠️ PLACEHOLDER: reemplazar TU-EMAIL -->
+            <a href="mailto:TU-EMAIL@dominio.com">TU-EMAIL@dominio.com</a>
+          </li>
+          <li>
+            <span class="mono">Instagram</span>
+            <!-- ⚠️ PLACEHOLDER: reemplazar TU-USUARIO -->
+            <a href="https://instagram.com/TU-USUARIO" target="_blank" rel="noopener noreferrer">@TU-USUARIO</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- ⚠️ FORMULARIO SIN BACKEND (simulado).
+           Para activarlo: poner un endpoint real en el atributo data-endpoint
+           (por ejemplo FormSubmit, Formspree o un webhook propio).
+           Si data-endpoint queda vacío, main.js simula el envío y muestra el éxito. -->
+      <form class="form reveal" id="contactForm" novalidate data-endpoint="">
+        <div class="field">
+          <label for="f-nombre">Nombre y apellido</label>
+          <input id="f-nombre" name="nombre" type="text" autocomplete="name" required placeholder="Cómo te llamás" />
+        </div>
+
+        <div class="field">
+          <label for="f-email">Email</label>
+          <input id="f-email" name="email" type="email" autocomplete="email" required placeholder="tu@email.com" />
+        </div>
+
+        <div class="field">
+          <label for="f-whatsapp">WhatsApp <span class="field__opt">(opcional)</span></label>
+          <input id="f-whatsapp" name="whatsapp" type="tel" autocomplete="tel" placeholder="+54 9 ..." />
+        </div>
+
+        <div class="field">
+          <label for="f-tipo">¿Qué necesitás?</label>
+          <select id="f-tipo" name="tipo" required>
+            <option value="">Elegí una opción</option>
+            <option>Estrategia y marketing integrado</option>
+            <option>Gestión de redes y contenido</option>
+            <option>Anuncios pagos</option>
+            <option>Producción audiovisual</option>
+            <option>Web, e-commerce o aplicación</option>
+            <option>Agente de IA o automatización</option>
+            <option>Todavía no lo tengo claro</option>
+          </select>
+        </div>
+
+        <div class="field field--full">
+          <label for="f-mensaje">Contanos brevemente tu situación</label>
+          <textarea id="f-mensaje" name="mensaje" rows="4" required placeholder="En qué está tu negocio hoy y qué te gustaría lograr"></textarea>
+        </div>
+
+        <!-- Honeypot anti-spam: invisible para personas, tentador para bots -->
+        <div class="honey" aria-hidden="true">
+          <label for="f-web">No completar</label>
+          <input id="f-web" name="_honey" type="text" tabindex="-1" autocomplete="off" />
+        </div>
+
+        <button class="btn btn--primary btn--block" type="submit">Solicitar diagnóstico gratuito</button>
+
+        <!-- Región viva: los mensajes de estado se anuncian a lectores de pantalla -->
+        <p class="form__status" id="formStatus" role="status" aria-live="polite"></p>
+      </form>
+
+    </div>
+  </section>
+
+</main>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="footer">
+  <div class="wrap footer__inner">
+    <a class="brand" href="#inicio">
+      <span class="brand__dot" aria-hidden="true"></span>
+      <span class="brand__name">Agencia&nbsp;Luz</span>
+    </a>
+
+    <nav class="footer__nav" aria-label="Navegación del pie">
+      <a href="#servicios">Servicios</a>
+      <a href="#desarrollo">Desarrollo</a>
+      <a href="#proceso">Proceso</a>
+      <a href="#faq">Preguntas</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+
+    <p class="footer__legal">© <span id="year">2026</span> Agencia Luz — Todos los derechos reservados.</p>
+  </div>
+</footer>
+
+<!-- Botón flotante de WhatsApp — ⚠️ PLACEHOLDER: reemplazar TU-NUMERO -->
+<a class="wa" href="https://wa.me/TU-NUMERO?text=Hola%20Agencia%20Luz%2C%20quiero%20mi%20diagn%C3%B3stico%20gratuito"
+   target="_blank" rel="noopener noreferrer" aria-label="Escribinos por WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2zm0 18.15h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.16 8.16 0 0 1-1.25-4.38c0-4.54 3.7-8.23 8.24-8.23 2.2 0 4.27.86 5.82 2.42a8.17 8.17 0 0 1 2.41 5.82c0 4.54-3.69 8.23-8.23 8.23zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.79.97-.14.16-.29.18-.54.06-.25-.12-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.5.11-.11.25-.29.37-.43.12-.15.16-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.43h-.47c-.17 0-.43.06-.66.31-.23.25-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.11-.22-.17-.47-.29z"/>
+  </svg>
+</a>
+
+<!-- ============================================================
+     SCRIPTS — orden importa. defer mantiene el orden y no bloquea el render.
+     Sin type="module": funciona también abriendo el archivo con doble clic.
+     ============================================================ -->
+<script defer src="lib/gsap.min.js"></script>
+<script defer src="lib/ScrollTrigger.min.js"></script>
+<script defer src="lib/manifest.js?v=20260903-3"></script>
+<script defer src="main.js?v=20260903-3"></script>
+
+</body>
+</html>
